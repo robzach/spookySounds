@@ -8,16 +8,16 @@
  * sings higher and higher. Don't listen for too long or it might steal your soul.
  * 
  * Pin mapping:
- *    analog sensor: pin A0
- *    speaker: pin 2
+ *    analog sensor: pin XXXXXXXXXXXXXXXX
+ *    speaker: pin 0
  * 
  * released to the public domain by the author
  * Robert Zacharias, rzach@cmu.edu
  * Oct. 23, 2018
  */
 
-const int SENSORPIN = A0;
-const int SPEAKERPIN = 2;
+const int SENSORPIN = A1;
+const int SPEAKERPIN = 4;
 
 // lookup table that describes a sine wave
 const float lookup[] = {
@@ -36,7 +36,7 @@ void loop() {
   
   // all four map() constants can be modified based on the sensor input range
   // and desired sound output range. These values for LTH1550-01 IR rangefinder.
-  int base = map(readVal, 0, 150, 100, 2000);
+  int base = map(readVal, 0, 75, 100, 2000);
 
   // much faster to look up, rather than compute, the sine wave
   float wave = lookup[counter]; 
