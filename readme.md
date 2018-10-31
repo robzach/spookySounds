@@ -6,7 +6,21 @@
 
 (image from spookyWiring folder in this repo)
 
-## Project BOM:
+## Wiring and software overview (quoted from the block comment at the top of spookySounds.ino)
+
+Spooky Sounds: a warbling theremin ghoul for a very IDeATe/MakerWing Halloween
+
+An analog sensor input (we're using an IR proxmity sensor) modulates the central frequency around which a tone warbles. It's spoooooky sounding!
+
+As a hand…or a skull!…gets closer to the IR proximity sensor, the ghoul sings higher and higher. Don't listen for too long or it might steal your soul.
+
+Designed to be run on an ATTiny85.
+
+Pin mapping:
+  * analog sensor: Arduino pin 2, equivalent to A1 (ATTiny hardware pin 7)
+  * piezo transducer: one leg each on Arduino pins 3 and 4 (which are ATTiny hardware pins 2 and 3)
+
+## Project bill of materials (BOM):
 
 number needed | item  | line cost | purchase link
 --- | --- | --- | ---
