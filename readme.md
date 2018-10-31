@@ -1,10 +1,12 @@
 # Spooooky sounds—a ghoulish singer for a very scary IDeATe/MakerWing Halloween
 
-Schematic image:
+## Schematic image:
 
 ![schematic image from Fritzing](https://github.com/robzach/spookySounds/blob/master/spookyWiring/spookyWiring_bb.jpg?raw=true)
 
-Sroject BOM:
+(image from spookyWiring folder in this repo)
+
+## Project BOM:
 
 number needed | item  | line cost | purchase link
 --- | --- | --- | ---
