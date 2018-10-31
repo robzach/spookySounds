@@ -1,10 +1,12 @@
 unsigned long timer, timer2;
 bool state;
 int counter;
+unsigned int maxSeen, minSeen;
 
 const byte SPEAKERA = 3, SPEAKERB = 4;
+const byte READPIN = A1;
 
-// lookup table that describes a sine wave
+// lookup table that describes a linear scale from 100->110->90->99%
 const float lookup[40] = {
   1.0,
   1.01, 1.02, 1.03, 1.04, 1.05, 1.06, 1.07, 1.08, 1.09, 1.1,
@@ -14,15 +16,20 @@ const float lookup[40] = {
 };
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(READPIN, INPUT);
   pinMode(SPEAKERA, OUTPUT);
   pinMode(SPEAKERB, OUTPUT);
 }
 
 void loop() {
 
-  unsigned int wait = analogRead(A1);
-  wait = map(wait, 0, 150, 10000, 500); // period of 10000->500 microseconds
+  unsigned int wait = analogRead(READPIN);
+
+  if (wait > maxSeen) maxSeen = wait;
+  if (wait < minSeen) minSeen = wait;
+
+  wait = map(wait, minSeen, maxSeen, 250, 5000);
 
   float warble = lookup[counter];
 
@@ -36,9 +43,11 @@ void loop() {
   }
 
   // used to cycle through lookup table's entries
-  if (micros() - timer2 >= 50) {
-    counter++;
-    if (counter == 40) counter = 0;
+  if (micros() - timer2 >= 50000) {
+    Serial.println(wait);
+
+    //    counter++;
+    //    if (counter == 40) counter = 0;
     timer2 = micros();
   }
 }
