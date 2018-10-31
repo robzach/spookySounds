@@ -39,7 +39,7 @@ void loop() {
     if (wait > maxSeen) maxSeen = wait;
     if (wait < minSeen) minSeen = wait;
 
-    wait = map(wait, minSeen, maxSeen, 500, 5000);
+    wait = map(wait, minSeen, maxSeen, 5000, 300);
 
     float warble = lookup[counter];
 
