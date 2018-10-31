@@ -10,7 +10,7 @@
    Designed to be run on an ATTiny85.
 
    Pin mapping:
-      analog sensor: Arduino pin 2 (ATTiny hardware pin 7)
+      analog sensor: Arduino pin 2, equivalent to A1 (ATTiny hardware pin 7)
       piezo transducer: one leg each on Arduino pins 3 and 4
           (which are ATTiny hardware pins 2 and 3)
 
