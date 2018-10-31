@@ -8,13 +8,9 @@ unsigned int wait;
 const byte SPEAKERA = 3, SPEAKERB = 4;
 const byte READPIN = A1;
 
-// lookup table that describes a linear scale from 100->110->90->99%
-const float lookup[40] = {
-  1.0,
-  1.01, 1.02, 1.03, 1.04, 1.05, 1.06, 1.07, 1.08, 1.09, 1.1,
-  1.09, 1.08, 1.07, 1.06, 1.05, 1.04, 1.03, 1.02, 1.01, 1.0,
-  0.99, 0.98, 0.97, 0.96, 0.95, 0.94, 0.93, 0.92, 0.91, 0.9,
-  0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99
+// lookup table that describes a sine wave
+const float lookup[] = {
+  0.00, 0.10, 0.20, 0.30, 0.39, 0.48, 0.56, 0.64, 0.72, 0.78, 0.84, 0.89, 0.93, 0.96, 0.99, 1.00, 1.00, 0.99, 0.97, 0.95, 0.91, 0.86, 0.81, 0.75, 0.68, 0.60, 0.52, 0.43, 0.33, 0.24, 0.14, 0.04, -0.06, -0.16, -0.26, -0.35, -0.44, -0.53, -0.61, -0.69, -0.76, -0.82, -0.87, -0.92, -0.95, -0.98, -0.99, -1.00, -1.00, -0.98, -0.96, -0.93, -0.88, -0.83, -0.77, -0.71, -0.63, -0.55, -0.46, -0.37, -0.28, -0.18, -0.08
 };
 
 void setup() {
@@ -32,25 +28,31 @@ void loop() {
     digitalWrite(SPEAKERA, state);
     digitalWrite(SPEAKERB, !state);
     timer = micros();
+    static int count;
+    count++;
+    if (count == 25) {
 
+      wait = analogRead(READPIN);
 
-    wait = analogRead(READPIN);
+      if (wait > maxSeen) maxSeen = wait;
+      if (wait < minSeen) minSeen = wait;
 
-    if (wait > maxSeen) maxSeen = wait;
-    if (wait < minSeen) minSeen = wait;
+      wait = map(wait, minSeen, maxSeen, 10, 5000);
 
-    wait = map(wait, minSeen, maxSeen, 5000, 300);
+      //      wait = log(wait + 1) / log(5000) * 100;
 
-    float warble = lookup[counter];
+      float warble = lookup[counter];
 
-    wait *= warble;
+      wait += (warble * 200);
+      count = 0;
+    }
   }
 
 
   // used to cycle through lookup table's entries
-  if (micros() - timer2 >= 1500) {
+  if (micros() - timer2 >= 2500) {
     counter++;
-    if (counter == 40) counter = 0;
+    if (counter == 62) counter = 0;
     timer2 = micros();
   }
 
