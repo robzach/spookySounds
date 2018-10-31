@@ -3,6 +3,8 @@ bool state;
 int counter;
 unsigned int maxSeen, minSeen;
 
+unsigned int wait;
+
 const byte SPEAKERA = 3, SPEAKERB = 4;
 const byte READPIN = A1;
 
@@ -16,7 +18,6 @@ const float lookup[40] = {
 };
 
 void setup() {
-  Serial.begin(9600);
   pinMode(READPIN, INPUT);
   pinMode(SPEAKERA, OUTPUT);
   pinMode(SPEAKERB, OUTPUT);
@@ -24,30 +25,33 @@ void setup() {
 
 void loop() {
 
-  unsigned int wait = analogRead(READPIN);
 
-  if (wait > maxSeen) maxSeen = wait;
-  if (wait < minSeen) minSeen = wait;
-
-  wait = map(wait, minSeen, maxSeen, 250, 5000);
-
-  float warble = lookup[counter];
-
-  wait *= warble;
 
   if (micros() - timer >= wait) {
     state = !state;
     digitalWrite(SPEAKERA, state);
     digitalWrite(SPEAKERB, !state);
     timer = micros();
+
+
+    wait = analogRead(READPIN);
+
+    if (wait > maxSeen) maxSeen = wait;
+    if (wait < minSeen) minSeen = wait;
+
+    wait = map(wait, minSeen, maxSeen, 500, 5000);
+
+    float warble = lookup[counter];
+
+    wait *= warble;
   }
+
 
   // used to cycle through lookup table's entries
-  if (micros() - timer2 >= 50000) {
-    Serial.println(wait);
-
-    //    counter++;
-    //    if (counter == 40) counter = 0;
+  if (micros() - timer2 >= 1500) {
+    counter++;
+    if (counter == 40) counter = 0;
     timer2 = micros();
   }
+
 }
